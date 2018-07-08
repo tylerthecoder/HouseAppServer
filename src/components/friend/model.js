@@ -7,7 +7,17 @@ const friendSchema = mongoose.Schema({
     hash: String,
     friend_id: String
 })
-const FriendModel = mongoose.model('Friends', friendSchema);
-module.exports = {
-    FriendModel
+
+const Model = mongoose.model('Friends', friendSchema);
+
+const FriendModel = {
+  get: (friend_id) => {
+    return Model.findOne({ friend_id })
+  },
+
+  getAll: () => {
+    return Model.find();
+  },
 }
+
+module.exports = { FriendModel, Model };
