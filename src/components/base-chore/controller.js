@@ -12,11 +12,11 @@ const BaseChoreController = {
     return BaseChoreModel.getAll()
   },
 
-  add: ({ name, points}) => {
-    if (!name || !points) {
+  add: ({ name, points, friend}) => {
+    if (!name || !points || !friend) {
       throw new Error('Malformed');
     }
-    return BaseChoreModel.add(name, points);
+    return BaseChoreModel.add(name, points, frined);
   }
 }
 

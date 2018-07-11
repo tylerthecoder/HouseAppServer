@@ -22,10 +22,11 @@ const BaseChoreModel = {
         return Model.find();
     },
 
-    add: (name, points) => {
+    add: (name, points, friend) => {
       const baseChore = new Model({
         name,
         points,
+        creator_id: friend,
         created_date: (new Date).getTime(),
       });
       return baseChore.save();

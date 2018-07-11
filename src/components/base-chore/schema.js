@@ -4,6 +4,7 @@ const BaseChoreType = `
   type BaseChoreType {
     id: String!,
     name: String!,
+    creator_id: String,
     points: Int!,
   }
 
@@ -13,8 +14,9 @@ const BaseChoreType = `
 
   type Mutation {
     addBaseChore(
-      name: String,
-      points: Int
+      name: String!,
+      points: Int!,
+      friend: String!,
     ) : BaseChoreType
   }
 `
