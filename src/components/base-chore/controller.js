@@ -16,7 +16,7 @@ const BaseChoreController = {
     if (!name || !points || !friend) {
       throw new Error('Malformed');
     }
-    return BaseChoreModel.add(name, points, frined);
+    return BaseChoreModel.add(name, points, friend);
   }
 }
 
