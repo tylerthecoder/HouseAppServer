@@ -50,11 +50,10 @@ const ChoreModel = {
             record[chore.base_chore_id]++;
             return record
         },{});
-
         const points = baseChores.reduce((points, bChore) => {
+	    if (!choreCount[bChore._id]) return points;
             return points + choreCount[bChore._id] * bChore.points
         },0)
-
         return {
             points: points || 0,
             friend_id
