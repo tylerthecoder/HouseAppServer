@@ -60,4 +60,5 @@ const ChoreModel = {
         }
     }
 }
+
 module.exports = { ChoreModel }
