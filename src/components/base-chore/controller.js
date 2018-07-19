@@ -14,10 +14,11 @@ const BaseChoreController = {
 
   add: ({ name, points, friend}) => {
     if (!name || !points || !friend) {
-      throw new Error('Malformed');
-    }
+      throw new Error(`Malformed friend:${friend}, name:${name}, points:${points}`);
+    };
     return BaseChoreModel.add(name, points, friend);
   }
 }
+
 
 module.exports = { BaseChoreController }
