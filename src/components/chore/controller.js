@@ -10,6 +10,7 @@ const ChoreController = {
   },
 
   getAll: () => {
+    console.log('Getting all chores');
     return ChoreModel.getAll();
   },
 

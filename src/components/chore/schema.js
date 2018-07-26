@@ -32,7 +32,7 @@ const ChoreType = `
       friend_id: String
     ): ChoreType
   }
-`
+`;
 
 const ChoreResolvers = {
   ChoreType: {
