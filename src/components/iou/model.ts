@@ -23,11 +23,16 @@ const iouModel = {
     return iou.save();
   },
 
-  ioWho: (friendId) => {
-    const aggragation = [
-      { $match: { from_id: friendId } },
-    ];
-    return Model.aggregate(aggragation);
+  ioWho: async (friendId): Promise<IIou[]> => {
+    return Model.find({
+      from_id: friendId,
+    });
+  },
+
+  whoome: async (friendId): Promise<IIou[]> => {
+    return Model.find({
+      to_id: friendId,
+    });
   },
 
 };

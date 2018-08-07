@@ -1,6 +1,7 @@
 import FriendController from './controller';
 import ChoreController from '../chore/controller';
 import * as mongo from 'mongoose';
+import iouController from '../iou/controller';
 
 export const FriendType = `
   type FriendType {
@@ -10,6 +11,7 @@ export const FriendType = `
     friend_id: String!,
     points: Int,
     chores: [ChoreType],
+    iowho: [IouType]
   }
 
   type Query {
@@ -22,6 +24,7 @@ export const FriendResolvers = {
   FriendType: {
     points: (obj) => FriendController.calcPoints(obj),
     chores: (obj) => ChoreController.getFriendChores(obj),
+    iowho: (obj) => iouController.ioWho(obj.friend_id),
   },
 
   Query: {

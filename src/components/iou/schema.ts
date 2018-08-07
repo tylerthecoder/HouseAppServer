@@ -1,10 +1,13 @@
 import iouController from './controller';
+import FriendController from '../friend/controller';
 import * as mongo from 'mongoose';
 
 export const IouType = `
   type IouType {
     id: String!,
     to_id: String!,
+    to: FriendType,
+    from: FriendType,
     from_id: String!,
     amount: Float!,
     time: String
@@ -26,6 +29,8 @@ export const IouType = `
 
 export const IouResolvers = {
   IouType: {
+    to: (obj) => FriendController.get({ friend_id: obj.to_id }),
+    from: (obj) => FriendController.get({ friend_id: obj.from_id }),
   },
   Query: {
     iou: (_, args) => iouController.get(args),

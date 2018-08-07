@@ -7,7 +7,6 @@ const consoleOptions = {
   json: false,
   colorize: true,
   prettyPrint: ( object ) => {
-    console.log('ejrkljds');
     return JSON.stringify(object);
   },
 };
