@@ -1,6 +1,5 @@
 import iouController from './controller';
 import FriendController from '../friend/controller';
-import * as mongo from 'mongoose';
 
 export const IouType = `
   type IouType {
@@ -23,7 +22,13 @@ export const IouType = `
       to_id: String!,
       from_id: String!,
       amount: Float!
-    ): IouType
+    ): IouType,
+
+    splitCost(
+      payerId: String!,
+      amount: Float!,
+      nonPayers: [String]!
+    ): Boolean
   }
 `;
 
@@ -38,21 +43,6 @@ export const IouResolvers = {
   },
   Mutation: {
     addIou: (_, args) => iouController.add(args),
+    splitCost: (_, args) => iouController.split(args.payerId, args.amount, args.nonPayers),
   },
 };
-
-const iouSchema = new mongo.Schema({
-  to_id: String,
-  from_id: String,
-  amount: Number,
-  time: String,
-});
-
-export interface IIou extends mongo.Document {
-  to_id: string;
-  from_id: string;
-  amount: number;
-  time: string;
-}
-
-export const IouModel: mongo.Model<IIou> = mongo.model<IIou>('Ious', iouSchema);
