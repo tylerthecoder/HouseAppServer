@@ -3,7 +3,7 @@ import log from '../../log';
 
 const iouController = {
   get: ({ id }): Promise<IIou> => {
-    log.verbose(`Getting iou id ${id} from controller`);
+    log.verbose(`IouController| id: ${id}`);
     if (!id) {
       throw new Error('get IOU malformed');
     }
@@ -11,11 +11,12 @@ const iouController = {
   },
 
   getAll: (): Promise<IIou[]> => {
-    log.verbose('Getting all ious from controller');
+    log.verbose('IouController getAll');
     return IouModel.getAll();
   },
 
   add: ({ to_id, from_id, amount }): Promise<IIou> => {
+    log.verbose(`IouController add| to_id: ${to_id} from_id: ${from_id} amount: ${amount}`);
     if (!to_id || !from_id) {
       throw new Error('add IOU malformed');
     }
@@ -23,6 +24,7 @@ const iouController = {
   },
 
   ioWho: async (friendId: string): Promise<IIou[]> => {
+    log.verbose(`IouController ioWho| friendId: ${friendId}`);
     // calculate how much I own each friend
     const iowho = await IouModel.ioWho(friendId);
     const whoome = await IouModel.whoome(friendId);
@@ -55,6 +57,7 @@ const iouController = {
   },
 
   split: (payerId: string, amount: number, nonPayers: string[]): boolean => {
+    log.verbose(`IouController split| payerId:${payerId} amount:${amount} nonPayer:${nonPayers}`);
     const numOfPeople = nonPayers.length + 1;
     const splitAmount = amount / numOfPeople;
     nonPayers.forEach((nonPayerId) => {

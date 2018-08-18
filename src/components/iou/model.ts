@@ -30,6 +30,7 @@ export const IouModel = {
   },
 
   add: (toId, fromId, amount): Promise<IIou> => {
+    log.verbose(`Adding IOU of ${amount} to ${toId} from ${fromId} to model`);
     const iou = new mongoModel({
       to_id: toId,
       from_id: fromId,
@@ -40,12 +41,14 @@ export const IouModel = {
   },
 
   ioWho: async (friendId): Promise<IIou[]> => {
+    log.verbose(`Getting friend ${friendId}s iowho`);
     return mongoModel.find({
       from_id: friendId,
     });
   },
 
   whoome: async (friendId): Promise<IIou[]> => {
+    log.verbose(`Getting friend ${friendId}s whoome`);
     return mongoModel.find({
       to_id: friendId,
     });
