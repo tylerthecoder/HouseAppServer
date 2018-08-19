@@ -9,6 +9,7 @@ export const IouType = `
     from: FriendType,
     from_id: String!,
     amount: Float!,
+    reason: String!,
     time: String
   }
 
@@ -21,13 +22,15 @@ export const IouType = `
     addIou(
       to_id: String!,
       from_id: String!,
-      amount: Float!
+      amount: Float!,
+      reason: String!,
     ): IouType,
 
     splitCost(
       payerId: String!,
       amount: Float!,
-      nonPayers: [String]!
+      nonPayers: [String]!,
+      reason: String!,
     ): Boolean
   }
 `;
@@ -43,6 +46,6 @@ export const IouResolvers = {
   },
   Mutation: {
     addIou: (_, args) => iouController.add(args),
-    splitCost: (_, args) => iouController.split(args.payerId, args.amount, args.nonPayers),
+    splitCost: (_, args) => iouController.split(args.payerId, args.amount, args.nonPayers, args.reason),
   },
 };

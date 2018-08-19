@@ -15,12 +15,12 @@ const iouController = {
     return IouModel.getAll();
   },
 
-  add: ({ to_id, from_id, amount }): Promise<IIou> => {
+  add: ({ to_id, from_id, amount, reason }): Promise<IIou> => {
     log.verbose(`IouController add| to_id: ${to_id} from_id: ${from_id} amount: ${amount}`);
     if (!to_id || !from_id) {
       throw new Error('add IOU malformed');
     }
-    return IouModel.add(to_id, from_id, amount);
+    return IouModel.add(to_id, from_id, amount, reason);
   },
 
   ioWho: async (friendId: string): Promise<IIou[]> => {
@@ -56,12 +56,12 @@ const iouController = {
     return newIous;
   },
 
-  split: (payerId: string, amount: number, nonPayers: string[]): boolean => {
+  split: (payerId: string, amount: number, nonPayers: string[], reason: string): boolean => {
     log.verbose(`IouController split| payerId:${payerId} amount:${amount} nonPayer:${nonPayers}`);
     const numOfPeople = nonPayers.length + 1;
     const splitAmount = amount / numOfPeople;
     nonPayers.forEach((nonPayerId) => {
-      IouModel.add(payerId, nonPayerId, splitAmount);
+      IouModel.add(payerId, nonPayerId, splitAmount, reason);
     });
     return true;
   },
