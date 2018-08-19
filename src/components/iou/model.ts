@@ -5,6 +5,7 @@ export interface IIou extends mongo.Document {
   to_id: string;
   from_id: string;
   amount: number;
+  reason: string;
   time: string;
 }
 
@@ -12,6 +13,7 @@ const iouSchema = new mongo.Schema({
   to_id: String,
   from_id: String,
   amount: Number,
+  reason: String,
   time: String,
 });
 
@@ -29,13 +31,14 @@ export const IouModel = {
     return mongoModel.find();
   },
 
-  add: (toId, fromId, amount): Promise<IIou> => {
+  add: (toId, fromId, amount, reason): Promise<IIou> => {
     log.verbose(`Adding IOU of ${amount} to ${toId} from ${fromId} to model`);
     const iou = new mongoModel({
       to_id: toId,
       from_id: fromId,
       amount,
-      assigned_date: (new Date()).getTime(),
+      reason,
+      time: (new Date()).getTime(),
     });
     return iou.save();
   },
