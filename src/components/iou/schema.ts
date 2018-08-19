@@ -23,14 +23,14 @@ export const IouType = `
       to_id: String!,
       from_id: String!,
       amount: Float!,
-      reason: String!,
+      reason: String!
     ): IouType,
 
     splitCost(
       payerId: String!,
       amount: Float!,
       nonPayers: [String]!,
-      reason: String!,
+      reason: String!
     ): Boolean
   }
 `;

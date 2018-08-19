@@ -11,7 +11,8 @@ export const FriendType = `
     friend_id: String!,
     points: Int,
     chores: [ChoreType],
-    iowho: [IouType]
+    iowho: [IouType],
+    allIous: [IouType]
   }
 
   type Query {
@@ -25,6 +26,7 @@ export const FriendResolvers = {
     points: (obj) => FriendController.calcPoints(obj),
     chores: (obj) => ChoreController.getFriendChores(obj),
     iowho: (obj) => iouController.ioWho(obj.friend_id),
+    allIous: (obj) => iouController.allMyIous(obj.friend_id),
   },
 
   Query: {

@@ -23,6 +23,20 @@ const iouController = {
     return IouModel.add(to_id, from_id, amount, reason);
   },
 
+  allMyIous: async (friendId: string): Promise<IIou[]> => {
+    log.verbose(`IouController allMyIous| friendId: ${friendId}`);
+
+    // calculate how much I own each friend
+    const iowho = await IouModel.ioWho(friendId);
+    const whoome = await IouModel.whoome(friendId);
+    const allIous = iowho.concat(whoome).sort((iou1, iou2) => {
+      const time1 = parseInt(iou1.time, 10);
+      const time2 = parseInt(iou2.time, 10);
+      return time2 - time1;
+    });
+    return allIous;
+  },
+
   ioWho: async (friendId: string): Promise<IIou[]> => {
     log.verbose(`IouController ioWho| friendId: ${friendId}`);
     // calculate how much I own each friend
