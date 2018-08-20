@@ -43,14 +43,14 @@ const iouController = {
     const iowho = await IouModel.ioWho(friendId);
     const whoome = await IouModel.whoome(friendId);
     const myIousReduced = {};
-    iowho.forEach((iou) => { // everyone who you owe
+    iowho.forEach((iou) => { // everyone who has paid you
       if (myIousReduced[iou.to_id]) {
         myIousReduced[iou.to_id] += iou.amount;
       } else {
         myIousReduced[iou.to_id] = iou.amount;
       }
     });
-    whoome.forEach((iou) => { // everyone you owe
+    whoome.forEach((iou) => { // everyone who you have paid
       if (myIousReduced[iou.from_id]) {
         myIousReduced[iou.from_id] -= iou.amount;
       } else {
@@ -58,11 +58,11 @@ const iouController = {
       }
     });
 
-    const newIous = Object.keys(myIousReduced).map((toId) => {
+    const newIous = Object.keys(myIousReduced).map((fromId) => {
       const iou = {
-        to_id: toId,
-        from_id: friendId,
-        amount: myIousReduced[toId],
+        to_id: friendId,
+        from_id: fromId,
+        amount: myIousReduced[fromId],
       } as IIou;
       return iou;
     });
@@ -75,7 +75,7 @@ const iouController = {
     const numOfPeople = nonPayers.length + 1;
     const splitAmount = amount / numOfPeople;
     nonPayers.forEach((nonPayerId) => {
-      IouModel.add(payerId, nonPayerId, splitAmount, reason);
+      IouModel.add(nonPayerId, payerId, splitAmount, reason);
     });
     return true;
   },
