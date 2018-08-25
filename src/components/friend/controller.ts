@@ -1,6 +1,6 @@
 import FriendModel from './model';
 import ChoreModel from '../chore/model';
-import { IFriend } from './schema';
+import { IFriend } from './model';
 import log from '../../log';
 
 const FriendController = {
@@ -15,6 +15,19 @@ const FriendController = {
   getAll: (): Promise<IFriend[]> => {
     log.verbose('Getting all friends from controller');
     return FriendModel.getAll();
+  },
+
+  updateToken: (friendId: string, token: string): Promise<boolean> => {
+    log.verbose(`FriendController updateToken| friendId:${friendId}, token:${token}`)
+    if (!friendId || !token) {
+      throw new Error('FriendController UpdateFriend malformed.');
+    };
+    return FriendModel.setToken(friendId, token);
+  },
+
+  create: (name: string, passwordHash: string, houseId: string, salt: string): Promise<IFriend> => {
+    log.verbose('Creating a friend');
+    return FriendModel.create(name, houseId, passwordHash, salt);
   },
 
   calcPoints: async ({ friend_id }): Promise<number> => {
