@@ -1,22 +1,16 @@
-import { FriendModel } from './components/friend/schema';
+import { FriendModel } from './components/friend/model';
 import * as crypto from 'crypto';
 import log from './log';
 import FriendController from './components/friend/controller';
 
-const CheckPass = (req, res): void => {
+const CheckPass = async (req, res) => {
   const { pass, whoami } = req.query;
-  FriendModel.findOne({ friend_id: whoami })
-    .then((friend) => {
-      if (friend.hash === pass) {
-        res.status(202).send('Success');
-      } else {
-        res.status(500).send('Inncorrect password');
-      }
-    })
-    .catch((err) => {
-      log.info('Error while trying to log in' + err);
-      res.status(500).send('Error Logging in');
-    });
+  const friend = await FriendModel.get(whoami);
+  if (friend.hash === pass) {
+    res.status(202).send('Success');
+  } else {
+    res.status(500).send('Inncorrect password');
+  }
 };
 
 const genRandomString = (length: number): string => {
@@ -35,7 +29,7 @@ export const authenticate = (app) => {
   app.post('/login', async (res, req, next) => {
     // check credentials and then send an auth token
     const { user, pass } = req.param;
-    const friend = await FriendModel.findOne({ friend_id: user });
+    const friend = await FriendModel.get(user);
     // unhash the password
     const hashedPassword = sha512(pass, friend.salt);
     if (hashedPassword === friend.hash) {
@@ -55,22 +49,22 @@ export const authenticate = (app) => {
 
   });
   app.post('/register', async (res, req, next) => {
-    const { user, pass, confirmPass } = req.param;
-    if (pass !== confirmPass) {
-      return next(new Error('Passwords don\'t match'));
-    }
+    // const { user, pass, confirmPass } = req.param;
+    // if (pass !== confirmPass) {
+    //   return next(new Error('Passwords don\'t match'));
+    // }
 
-    const isFriend = await FriendModel.find({ name: user });
-    if (isFriend.length > 0) { // username alread exsits
-      return next(new Error('Username already taken'));
-    }
+    // const isFriend = await FriendModel.find({ name: user });
+    // if (isFriend.length > 0) { // username alread exsits
+    //   return next(new Error('Username already taken'));
+    // }
 
-    const salt = genRandomString(16);
-    const passwordHash = sha512(pass, salt);
-    const friend = FriendController.create(user, passwordHash, '123', salt);
-    if (friend) {
-      return res.status(202).send('User created succufully');
-    }
+    // const salt = genRandomString(16);
+    // const passwordHash = sha512(pass, salt);
+    // const friend = FriendController.create(user, passwordHash, '123', salt);
+    // if (friend) {
+    //   return res.status(202).send('User created succufully');
+    // }
   });
 };
 

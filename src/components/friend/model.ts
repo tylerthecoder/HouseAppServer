@@ -22,7 +22,7 @@ const FriendSchema = new mongo.Schema({
 
 const mongoModel: mongo.Model<IFriend> = mongo.model<IFriend>('Friends', FriendSchema);
 
-const FriendModel = {
+export const FriendModel = {
   get: async (friendId): Promise<IFriend> => {
     log.verbose(`Getting friend ${friendId} in model`);
     return mongoModel.findOne({ friend_id: friendId });
@@ -52,5 +52,3 @@ const FriendModel = {
     return friend.save();
   },
 };
-
-export default FriendModel;

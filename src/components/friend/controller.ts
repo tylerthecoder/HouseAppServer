@@ -1,4 +1,4 @@
-import FriendModel from './model';
+import { FriendModel } from './model';
 import ChoreModel from '../chore/model';
 import { IFriend } from './model';
 import log from '../../log';
@@ -11,7 +11,22 @@ const FriendController = {
     }
     return FriendModel.get(friend_id);
   },
+ // const { user, pass, confirmPass } = req.param;
+    // if (pass !== confirmPass) {
+    //   return next(new Error('Passwords don\'t match'));
+    // }
 
+    // const isFriend = await FriendModel.find({ name: user });
+    // if (isFriend.length > 0) { // username alread exsits
+    //   return next(new Error('Username already taken'));
+    // }
+
+    // const salt = genRandomString(16);
+    // const passwordHash = sha512(pass, salt);
+    // const friend = FriendController.create(user, passwordHash, '123', salt);
+    // if (friend) {
+    //   return res.status(202).send('User created succufully');
+    // }
   getAll: (): Promise<IFriend[]> => {
     log.verbose('Getting all friends from controller');
     return FriendModel.getAll();
