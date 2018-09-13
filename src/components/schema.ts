@@ -11,27 +11,28 @@ export const mainSchema = `
     mealId: Boolean!,
   }
 
+  type ItemType {
+    id: String!,
+    name: String!,
+    quantity: Int
+    quantityUnit: String,
+    type: String,
+  }
+
   type Query {
+    suggestedItem(str: String): [ItemType],
     shoppingList: [ListItemType],
-    allListItems: [ListItemType]
+    allListItems: [ListItemType],
   }
 
   type Mutation {
     addItemToList(
-      itemId: String!,
-      notes: String!,
-      mealId: String,
-    ): ListItemType,
-
-    addNewItemToList(
-      itemName: String!,
+      itemName: String,
       notes: String,
-      mealId: String,
     ): ListItemType,
-
-    getListItem(
-      itemId: String!,
-      friendId: String!,
+    removeListItem(
+      listItemId: String!,
+      friendId: String,
     ): Boolean
   }
 `;
@@ -41,10 +42,14 @@ export const mainResolvers = {
     name: (self) => itemController.getItemName(self.itemId),
   },
   Query: {
+    suggestedItem: (_, args) => itemController.suggestItems(args.str),
     shoppingList: (_, args) => shoppingListController.getList(),
   },
   Mutation: {
-    addItemToList: (_, args) => shoppingListController.add(args.itemId, args.notes, args.mealId),
-    addNewItemToList: (_, args) => shoppingListController.addNewItem(args.itemName, args.notes, args.mealId),
+    addItemToList: (_, args) => {
+      console.log('WTF');
+      shoppingListController.addItemByName(args.itemName, args.notes);
+    },
+    removeListItem: (_, args) => shoppingListController.removeItem(args.listItemId),
   },
-}
+};

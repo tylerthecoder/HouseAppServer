@@ -1,6 +1,6 @@
 import log from '../log';
 import * as mongo from 'mongoose';
-import {itemController } from './item';
+import { itemController, IItem } from './item';
 
 interface IListItem extends mongo.Document {
     itemId: string;
@@ -33,7 +33,7 @@ export class ShoppingListController {
        return newListItem.save();
     }
 
-    public add(itemId: string, notes: string, mealId?: string): Promise<IListItem> {
+    public addItem(itemId: string, notes: string, mealId?: string): Promise<IListItem> {
         // add list item to database
         log.verbose(`ShoppingListController add| itemId:${itemId}, notes:${notes}, mealId:${mealId}`);
         const item = new this.model({
@@ -43,6 +43,25 @@ export class ShoppingListController {
             aquired: false,
         });
         return item.save();
+    }
+
+    public async addItemByName(itemName: string, notes: string): Promise<IListItem> {
+        log.verbose(`ShoppingListController addItemByName: itemName: ${itemName}, notes: ${notes}`);
+        const doesNameExist = await itemController.itemWithNameExists(itemName);
+        let item: IItem;
+        if (doesNameExist) {
+            item = await itemController.findItemByName(itemName);
+        } else {
+            item = await itemController.add(itemName);
+        }
+        const newItem = new this.model({
+            itemId: item.id,
+            notes,
+            mealId: false,
+            aquired: false,
+        });
+        newItem.save();
+        return newItem;
     }
 
     public async getItem(listItemId: string): Promise<IListItem> {
