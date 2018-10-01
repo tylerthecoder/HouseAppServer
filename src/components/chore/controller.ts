@@ -1,6 +1,6 @@
 import ChoreModel from './model';
 import FriendController from '../friend/controller';
-import { IFriend } from '../friend/schema';
+import { IFriend } from '../friend/model';
 import log from '../../log';
 import { IChore } from './schema';
 

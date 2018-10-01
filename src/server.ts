@@ -11,6 +11,7 @@ import { BaseChoreType, BaseChoreResolvers } from './components/base-chore/schem
 import { ChoreType, ChoreResolvers } from './components/chore/schema';
 import { FriendType, FriendResolvers } from './components/friend/schema';
 import { IouType, IouResolvers } from './components/iou/schema';
+import { mainResolvers, mainSchema } from './components/schema';
 import { mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 
 declare var process: {
@@ -32,11 +33,10 @@ log.info(`Environment: ${process.env.NODE_ENV}`);
 const uri = (process.env.NODE_ENV === 'development')
   ? 'mongodb+srv://Tyler_Tracy:tyler123@cluster0-pz7ea.mongodb.net/lounge621'
   : 'mongodb+srv://Tyler_Tracy:tyler123@cluster0-pz7ea.mongodb.net/lounge621Prod';
-
 mongo.connect(uri);
 
-const types = mergeTypes([BaseChoreType, ChoreType, FriendType, IouType]);
-const resolvers = mergeResolvers([BaseChoreResolvers, ChoreResolvers, FriendResolvers, IouResolvers ]);
+const types = mergeTypes([BaseChoreType, ChoreType, FriendType, IouType, mainSchema]);
+const resolvers = mergeResolvers([BaseChoreResolvers, ChoreResolvers, FriendResolvers, IouResolvers, mainResolvers ]);
 
 const schema = makeExecutableSchema({
   resolvers,
