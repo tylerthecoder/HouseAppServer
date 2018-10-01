@@ -1,0 +1,16 @@
+[Unit]
+Description=HouseApp
+After=network.target
+
+[Service]
+ExecStart=/home/tylertracy/HouseAppServer/dist/bundle.js
+Restart=always
+User=nobody
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/tylertracy/HouseAppServer
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
+
